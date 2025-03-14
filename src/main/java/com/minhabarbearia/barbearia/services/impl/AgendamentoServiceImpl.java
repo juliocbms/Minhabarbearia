@@ -1,5 +1,6 @@
 package com.minhabarbearia.barbearia.services.impl;
 
+import com.minhabarbearia.barbearia.exception.RegraNegocioException;
 import com.minhabarbearia.barbearia.models.entity.AgendamentoEntity;
 import com.minhabarbearia.barbearia.services.AgendamentoService;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,8 @@ public class AgendamentoServiceImpl implements AgendamentoService {
 
     @Override
     public void validar(AgendamentoEntity agendamento) {
-
+        if (agendamento.getBarbeiro() ==  null || agendamento.getBarbeiro().equals("")){
+            throw new RegraNegocioException("Informe um barbeiro.");
+        }
     }
 }
