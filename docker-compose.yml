@@ -1,0 +1,41 @@
+services:
+  app:
+    build:
+      context: .
+    command: bash start-dev.sh
+    environment:
+      DB_URL: jdbc:postgresql://db:5432/barbearia-api
+      DB_USER: barbearia-api
+      DB_PASSWORD: barbearia-api
+      SPRING_PROFILES_ACTIVE: dev
+    ports:
+      - "8080:8080"
+      - "5005:5005"
+    volumes:
+      - .:/barbearia-api:z
+    depends_on:
+      - db
+    networks:
+      - barbearia-api-net
+
+  db:
+    image: postgres:17.2
+    environment:
+      POSTGRES_USER: barbearia-api
+      POSTGRES_PASSWORD: barbearia-api
+      POSTGRES_DB: barbearia-api
+      SPRING_PROFILES_ACTIVE: dev
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - barbearia-api-net
+
+networks:
+  barbearia-api-net:
+    name: barbearia-api-net
+    external: true
+
+volumes:
+  db-data:
