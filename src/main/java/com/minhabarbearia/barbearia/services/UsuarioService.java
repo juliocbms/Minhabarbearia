@@ -1,5 +1,6 @@
 package com.minhabarbearia.barbearia.services;
 
+import com.minhabarbearia.barbearia.dto.UsuarioDTO;
 import com.minhabarbearia.barbearia.models.entity.UsuarioEntity;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +11,7 @@ public interface UsuarioService {
 
     UsuarioEntity autenticar(String email, String senha);
 
-    UsuarioEntity salvarUsuario(UsuarioEntity usuario);
+    UsuarioEntity salvarUsuario(UsuarioDTO usuarioDTO);
 
     UsuarioEntity atualizar( UsuarioEntity usuario);
 

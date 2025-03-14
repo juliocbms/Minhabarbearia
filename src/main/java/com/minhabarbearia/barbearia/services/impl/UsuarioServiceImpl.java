@@ -1,5 +1,6 @@
 package com.minhabarbearia.barbearia.services.impl;
 
+import com.minhabarbearia.barbearia.dto.UsuarioDTO;
 import com.minhabarbearia.barbearia.models.entity.UsuarioEntity;
 import com.minhabarbearia.barbearia.models.repository.UsuarioRepository;
 import com.minhabarbearia.barbearia.services.UsuarioService;
@@ -20,9 +21,16 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public UsuarioEntity salvarUsuario(UsuarioEntity usuario) {
-        serviceQuery.verifyEmail(usuario.getEmail());
-        serviceQuery.verifyPhone(usuario.getPhone());
+    public UsuarioEntity salvarUsuario(UsuarioDTO usuarioDTO) {
+        UsuarioEntity usuario = UsuarioEntity.builder()
+                .name(usuarioDTO.getName())
+                .email(usuarioDTO.getEmail())
+                .phone(usuarioDTO.getPhone())
+                .password(usuarioDTO.getPassword())
+                .role(usuarioDTO.getRole())
+                .build();
+        serviceQuery.verifyEmail(usuarioDTO.getEmail());
+        serviceQuery.verifyPhone(usuarioDTO.getPhone());
 
         return  repository.save(usuario);
     }

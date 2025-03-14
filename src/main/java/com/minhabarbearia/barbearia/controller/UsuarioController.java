@@ -28,16 +28,10 @@ public class UsuarioController {
     @Operation(summary = "salva usuarios", description = "metodo para salvar dados de usuarios")
     @ApiResponse(responseCode = "201" , description = "usuario salvo")
     @ApiResponse(responseCode = "400", description = "Usuario ja cadastrado")
-    public ResponseEntity salvar(@RequestBody UsuarioDTO dto){
-        UsuarioEntity usuario = UsuarioEntity.builder()
-                .name(dto.getName())
-                .email(dto.getEmail())
-                .phone(dto.getPhone())
-                .password(dto.getPassword())
-                .role(dto.getRole())
-                .build();
+    public ResponseEntity salvar(@RequestBody UsuarioDTO usuariodto){
+
         try{
-            UsuarioEntity usuarioSalvo = service.salvarUsuario(usuario);
+            UsuarioEntity usuarioSalvo = service.salvarUsuario(usuariodto);
             return  new ResponseEntity(usuarioSalvo, HttpStatus.CREATED);
         }catch (RegraNegocioException e){
             return ResponseEntity.badRequest().body(e.getMessage());
