@@ -1,16 +1,17 @@
 package com.minhabarbearia.barbearia.dto;
 
 import com.minhabarbearia.barbearia.models.enums.Role;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
 public class UsuarioDTO {
+
+    private Long id;
 
     private String name;
 

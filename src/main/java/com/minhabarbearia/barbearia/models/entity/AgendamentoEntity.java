@@ -1,8 +1,10 @@
 package com.minhabarbearia.barbearia.models.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.minhabarbearia.barbearia.models.enums.Status;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
@@ -44,9 +46,18 @@ public class AgendamentoEntity {
     @Column(nullable = false, name = "end_at")
     private OffsetDateTime endAt;
 
-   // @Column(name = "data_agendamento", nullable = false)
-   // @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-   // private LocalDate dataAgendamento;
+    @Column(name = "status", nullable = false)
+    @Enumerated(value = EnumType.STRING)
+    private Status status;
+
+    @CreationTimestamp
+    @Column(name = "data_cadastro", nullable = false)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDate dataCadastro = LocalDate.now();
+
+   @Column(name = "data_agendamento", nullable = false)
+   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+   private LocalDate dataAgendamento;
 
 
 

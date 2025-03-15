@@ -1,5 +1,6 @@
 package com.minhabarbearia.barbearia.services;
 
+import com.minhabarbearia.barbearia.dto.AgendamentoDTO;
 import com.minhabarbearia.barbearia.models.entity.AgendamentoEntity;
 import org.springframework.stereotype.Service;
 
@@ -9,13 +10,13 @@ import java.util.Optional;
 
 public interface AgendamentoService {
 
-    AgendamentoEntity salvar(AgendamentoEntity agendamento);
+    AgendamentoEntity salvar(AgendamentoDTO agendamentoDTO);
 
-    AgendamentoEntity atualizar(AgendamentoEntity agendamento);
+    AgendamentoEntity atualizar(AgendamentoDTO agendamentoDTO);
 
-    void deletar(AgendamentoEntity agendamento);
+    void deletar(AgendamentoDTO agendamentoDTO);
 
-    void validar(AgendamentoEntity agendamento);
+
 
 
 

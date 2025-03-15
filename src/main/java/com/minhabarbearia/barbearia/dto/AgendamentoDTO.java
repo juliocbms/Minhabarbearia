@@ -1,30 +1,35 @@
 package com.minhabarbearia.barbearia.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.minhabarbearia.barbearia.models.entity.UsuarioEntity;
-import jakarta.persistence.*;
+import com.minhabarbearia.barbearia.models.enums.Status;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 
-import static jakarta.persistence.GenerationType.IDENTITY;
-
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class AgendamentoDTO {
 
 
     private Long id;
 
+    private Long clienteId;
 
-    private UsuarioEntity cliente;
-
-
-    private UsuarioEntity barbeiro;
-
+    private Long barbeiroId;
 
     private OffsetDateTime startAt;
 
 
     private OffsetDateTime endAt;
 
-    // private LocalDate dataAgendamento;
+    private Status status;
+
+    private LocalDate dataCadastro;
+
+     private LocalDate dataAgendamento;
 }

@@ -10,11 +10,12 @@ public interface UsuarioServiceQuery {
 
     void validarEmail(String email);
 
-    void verifyPhone(final String phone);
+    void verifyPhone(long id,  String phone);
+
+    void verifyPhone(String phone);
+
+    void verifyEmail( long id, String email);
 
 
-    void verifyEmail(final String email);
-
-
-
+    void verifyEmail(String email);
 }

@@ -13,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("usuarios")
 @AllArgsConstructor
@@ -35,4 +37,43 @@ public class UsuarioController {
         }
     }
 
+
+    @PutMapping("{id}")
+    @Operation(summary = "atualiza usuarios", description = "metodo para atualizar dados de usuarios")
+    @ApiResponse(responseCode = "201" , description = "usuario atualizado")
+    @ApiResponse(responseCode = "400", description = "erro")
+    public ResponseEntity atualizar(@PathVariable("id")  long id, @RequestBody UsuarioDTO usuariodto){
+        try {
+            UsuarioEntity usuarioatualizado = service.atualizar(id, usuariodto);
+            return ResponseEntity.ok(usuarioatualizado);
+        } catch (RegraNegocioException e ){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Usuário não encontrado na base de Dados.");
+        }
+    }
+
+    @DeleteMapping("{id}")
+    @Operation(summary = "deleta usuarios", description = "metodo para deletar dados de usuarios")
+    @ApiResponse(responseCode = "201" , description = "usuario deletado")
+    @ApiResponse(responseCode = "400", description = "usuario nao encontrado")
+    public ResponseEntity<?> deletar(@PathVariable("id") Long id) {
+        return service.obterPorId(id).map( entidade -> {
+            service.delete(entidade.getId());
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }).orElseGet(() ->
+                new ResponseEntity<>("Usuário não encontrado na base de Dados.", HttpStatus.BAD_REQUEST));
+    }
+
+    @GetMapping("{id}")
+    @Operation(summary = "busca usuarios", description = "metodo para buscar dados de usuarios")
+    @ApiResponse(responseCode = "201" , description = "usuario encontrado")
+    @ApiResponse(responseCode = "400", description = "usuario nao encontrado")
+    public ResponseEntity obterUsuario(@PathVariable("id") Long id){
+        Optional<UsuarioEntity> usuario = service.obterPorId(id);
+
+        if (!usuario.isPresent()){
+            return  new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+
+        return ResponseEntity.ok(usuario);
+    }
 }
