@@ -52,8 +52,8 @@ public class AgendamentoEntity {
 
     @CreationTimestamp
     @Column(name = "data_cadastro", nullable = false)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDate dataCadastro = LocalDate.now();
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private OffsetDateTime dataCadastro;
 
    @Column(name = "data_agendamento", nullable = false)
    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
