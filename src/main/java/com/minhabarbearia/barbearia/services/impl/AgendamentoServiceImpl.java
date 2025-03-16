@@ -31,8 +31,8 @@ public class AgendamentoServiceImpl implements AgendamentoService {
     private final UsuarioRepository usuarioRepository;
 
     @Override
-    public AgendamentoEntity salvar(AgendamentoDTO agendamentoDTO) {
-        serviceQuery.verificarDisponibilidade(agendamentoDTO.getId(), agendamentoDTO.getStartAt(),agendamentoDTO.getEndAt());
+    public AgendamentoEntity salvar( AgendamentoDTO agendamentoDTO) {
+        serviceQuery.verificarSeBArbeiroEstaDInponivel(agendamentoDTO.getBarbeiroId(), agendamentoDTO.getStartAt(),agendamentoDTO.getEndAt());
         serviceQuery.verificarSeAgendamentoExiste(agendamentoDTO.getStartAt(), agendamentoDTO.getEndAt());
 
         UsuarioEntity cliente = usuarioRepository.findById(agendamentoDTO.getClienteId())

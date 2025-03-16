@@ -1,6 +1,7 @@
 package com.minhabarbearia.barbearia.models.repository;
 
 import com.minhabarbearia.barbearia.models.entity.AgendamentoEntity;
+import com.minhabarbearia.barbearia.models.enums.Status;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -14,33 +15,39 @@ import java.util.Optional;
 @Repository
 public interface AgendamentoRepository extends JpaRepository<AgendamentoEntity,Long> {
 
-    List<AgendamentoEntity> findByStartAtGreaterThanEqualAndEndAtLessThanEqualOrderByStartAtAscEndAtAsc(
-            final OffsetDateTime startAt,
-            final OffsetDateTime endAt
-    );
+
 
     boolean existsByStartAtAndEndAt(final OffsetDateTime startAt, final OffsetDateTime endAt);
 
-    @Query("SELECT a FROM AgendamentoEntity a WHERE a.cliente.id = :id AND a.dataAgendamento = :date")
-    List<AgendamentoEntity> findByUsuarioIdAndDataHora(
+    @Query("SELECT a FROM AgendamentoEntity a WHERE (a.cliente.id = :id OR a.barbeiro.id = :id) AND a.dataAgendamento = :date")
+    List<AgendamentoEntity> findByUsuarioIdOrBarbeiroIdAndDataAgendamento(
             @Param("id") Long id,
             @Param("date") LocalDate date
     );
 
 
-    @Query("SELECT a FROM AgendamentoEntity a WHERE a.cliente.id = :usuarioId AND a.startAt >= :startAt AND a.endAt <= :endAt")
+    @Query("SELECT a FROM AgendamentoEntity a WHERE a.barbeiro.id = :barbeiroId AND a.startAt >= :startAt AND a.endAt <= :endAt")
     Optional<AgendamentoEntity> findByUsuarioIdAndStartAtGreaterThanEqualAndEndAtLessThanEqual(
-            @Param("usuarioId") Long id,
-            @Param("startAt") LocalDate startAt,
-            @Param("endAt") LocalDate endAt
+            @Param("barbeiroId") Long id,
+            @Param("startAt") OffsetDateTime startAt,
+            @Param("endAt") OffsetDateTime endAt
     );
 
 
-    @Query("SELECT a FROM AgendamentoEntity a WHERE a.cliente.id = :clienteId AND a.dataAgendamento BETWEEN :dataInicio AND :dataFim AND a.status = :status")
-    List<AgendamentoEntity> findByClienteIdAndDataAgendamentoBetweenAndStatus(
+    @Query("SELECT a FROM AgendamentoEntity a WHERE (a.cliente.id = :id OR a.barbeiro.id = :id) AND a.dataAgendamento BETWEEN :dataInicio AND :dataFim AND a.status = :status")
+    List<AgendamentoEntity> findByUsuarioIdOrBarbeiroIdAndDataAgendamentoBetweenAndStatus(
             @Param("clienteId") Long id,
             @Param("dataInicio") LocalDate dataInicio,
             @Param("dataFim") LocalDate dataFim,
-            @Param("status") String status
+            @Param("status") Status status
     );
+
+    @Query("SELECT a FROM AgendamentoEntity a WHERE (a.cliente.id = :id OR a.barbeiro.id = :id) " +
+            "AND a.dataAgendamento BETWEEN :dataInicio AND :dataFim " +
+            "AND (:status IS NULL OR a.status = :status)")
+    List<AgendamentoEntity> findByClienteIdOrBarbeiroIdAndDataAgendamentoBetweenAndStatus(
+            @Param("id") Long id,
+            @Param("dataInicio") LocalDate dataInicio,
+            @Param("dataFim") LocalDate dataFim,
+            @Param("status") String status);
 }

@@ -95,46 +95,23 @@ public class AgendamentoController {
                 new ResponseEntity<>("Agendamento não encontrado na base de Dados.", HttpStatus.BAD_REQUEST));
     }
 
-    @GetMapping("{id}")
-    @Operation(summary = "busca agendamento por id", description = "metodo para buscar agendamentos por id")
-    @ApiResponse(responseCode = "201" , description = "agendamento encontrado")
-    @ApiResponse(responseCode = "400", description = "agendamento nao encontrado")
-    public ResponseEntity obterAgendamento(@PathVariable("id") Long id){
-        Optional<AgendamentoEntity> agendamento = service.obterPorId(id);
-
-        if (!agendamento.isPresent()){
-            return  new ResponseEntity(HttpStatus.NOT_FOUND);
-        }
-
-        return ResponseEntity.ok(agendamento);
-    }
-
-    @GetMapping("/data")
-    @Operation(summary = "busca agendamento por data", description = "metodo para buscar agendamentos por data")
-    @ApiResponse(responseCode = "201" , description = "agendamento encontrado")
-    @ApiResponse(responseCode = "400", description = "agendamento nao encontrado")
-    public ResponseEntity<List<AgendamentoEntity>> obterAgendamentoPorData( Long id, LocalDate data){
-        List<AgendamentoEntity> agendamento = serviceQuery.listarAgendamentosporData(id,data);
-
-        if (agendamento.isEmpty()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-
-        return ResponseEntity.ok(agendamento);
-    }
-
     @GetMapping("/data/periodo")
-    @Operation(summary = "busca agendamento por periodo", description = "metodo para buscar agendamentos por periodo")
-    @ApiResponse(responseCode = "201" , description = "agendamento encontrado")
-    @ApiResponse(responseCode = "400", description = "agendamento nao encontrado")
-    public ResponseEntity obterAgendamentoPorPeriodo( Long id, LocalDate dataInicio, LocalDate dataFim, String status){
-        List<AgendamentoEntity> agendamento = serviceQuery.listarAgendamentosporClientePEriodoEStatus(id,dataInicio, dataFim,status);
+    @Operation(summary = "Busca agendamento por período", description = "Método para buscar agendamentos por período")
+    @ApiResponse(responseCode = "200", description = "Agendamentos encontrados")
+    @ApiResponse(responseCode = "204", description = "Nenhum agendamento encontrado")
+    public ResponseEntity<List<AgendamentoEntity>> obterAgendamentos(
+            @RequestParam Long id,
+            @RequestParam(required = false) LocalDate dataInicio,
+            @RequestParam(required = false) LocalDate dataFim,
+            @RequestParam(required = false) String status) {
 
-        if (!agendamento.isEmpty()){
-            return  new ResponseEntity(HttpStatus.NOT_FOUND);
+        List<AgendamentoEntity> agendamentos = serviceQuery.listarAgendamentos(id, dataInicio, dataFim, status);
+
+        if (agendamentos.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
 
-        return ResponseEntity.ok(agendamento);
+        return ResponseEntity.ok(agendamentos);
     }
 
 
