@@ -6,6 +6,12 @@ package com.minhabarbearia.barbearia.models.entity;
 import com.minhabarbearia.barbearia.models.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
+import java.util.List;
 
 
 @Entity
@@ -25,7 +31,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UsuarioEntity {
+public class UsuarioEntity  {
 
 
         @Id
@@ -47,5 +53,8 @@ public class UsuarioEntity {
         @Column(name = "role", nullable = false)
         @Enumerated(value = EnumType.STRING)
         private Role role;
+
+
+
 
 }

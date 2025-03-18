@@ -11,4 +11,6 @@ spring:
     hibernate:
       ddl-auto: validate
 
-
+  jwt:
+    expiracao: 30
+    chave-assinatura: Q9CqhbvB4c6kH/dj1igps/pTIogfzRNZoAjDMF/UkDg=

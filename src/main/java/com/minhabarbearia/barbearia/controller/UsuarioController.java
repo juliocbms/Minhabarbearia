@@ -1,48 +1,36 @@
 package com.minhabarbearia.barbearia.controller;
 
 
-import com.minhabarbearia.barbearia.dto.TokenDTO;
+
+
 import com.minhabarbearia.barbearia.dto.UsuarioDTO;
 import com.minhabarbearia.barbearia.exception.RegraNegocioException;
 import com.minhabarbearia.barbearia.models.entity.UsuarioEntity;
-import com.minhabarbearia.barbearia.services.JwtService;
+import com.minhabarbearia.barbearia.models.repository.UsuarioRepository;
 import com.minhabarbearia.barbearia.services.UsuarioService;
 import com.minhabarbearia.barbearia.services.query.UsuarioServiceQuery;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
 @RestController
-@RequestMapping("usuarios")
-@AllArgsConstructor
-@SecurityRequirement(name = "bearerAuth")
+@RequestMapping("clients")
 public class UsuarioController {
 
-    private final UsuarioService service;
-    private final UsuarioServiceQuery serviceQuery;
-    private  final JwtService jwtService;
+    @Autowired
+    private UsuarioService service;
 
-    @PostMapping("/autenticar")
-    @Operation(summary = "autentica usuarios", description = "metodo para autenticar dados de usuarios")
-    @ApiResponse(responseCode = "200" , description = "usuario autenticado")
-    @ApiResponse(responseCode = "400", description = "Usuario não cadastrado")
-    public ResponseEntity<?> autenticar(@RequestBody UsuarioDTO dto){
-        try{
-            UsuarioEntity usuarioAutenticado = service.autenticar(dto.getEmail(), dto.getPassword());
-            String token = jwtService.gerarToken(usuarioAutenticado);
-            TokenDTO tokenDTO = new TokenDTO(usuarioAutenticado.getName(), token);
-            return  ResponseEntity.ok(tokenDTO);
-        }catch (RegraNegocioException e){
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
+    @Autowired
+    private UsuarioRepository repository;
 
+    @Autowired
+    private UsuarioServiceQuery serviceQuery;
 
 
     @PostMapping
