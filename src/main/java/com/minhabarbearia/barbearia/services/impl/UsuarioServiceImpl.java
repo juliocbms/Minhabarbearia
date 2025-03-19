@@ -1,11 +1,18 @@
 package com.minhabarbearia.barbearia.services.impl;
 
 import com.minhabarbearia.barbearia.dto.UsuarioDTO;
+import com.minhabarbearia.barbearia.exception.RegraNegocioException;
 import com.minhabarbearia.barbearia.models.entity.UsuarioEntity;
 import com.minhabarbearia.barbearia.models.repository.UsuarioRepository;
+import com.minhabarbearia.barbearia.services.TokenService;
 import com.minhabarbearia.barbearia.services.UsuarioService;
 import com.minhabarbearia.barbearia.services.query.UsuarioServiceQuery;
 import lombok.AllArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -16,25 +23,51 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     private final UsuarioRepository repository;
     private final UsuarioServiceQuery serviceQuery;
+    private final BCryptPasswordEncoder encoder;
+
 
     @Override
-    public UsuarioEntity autenticar(String email, String senha) {
-        return null;
+    public UsuarioEntity autenticar(String email, String password) {
+        Optional<UsuarioEntity> user = repository.findByEmail(email);
+
+        if(user.isEmpty()) {
+            throw new RegraNegocioException("Usuário não encontrado para o email informado.");
+        }
+
+        boolean senhasBatem = encoder.matches(password,user.get().getPassword());
+
+        if(!senhasBatem) {
+            throw new RegraNegocioException("Senha inválida.");
+        }
+
+        return user.get();
     }
+
+
+
 
     @Override
     public UsuarioEntity salvarUsuario(UsuarioDTO usuarioDTO) {
+        if (repository.findByEmail(usuarioDTO.getEmail()).isPresent()) {
+            throw new RegraNegocioException("Usuário já cadastrado com este e-mail.");
+        }
+
+        if (usuarioDTO.getPassword() == null || usuarioDTO.getPassword().trim().isEmpty()) {
+            throw new RegraNegocioException("A senha não pode ser vazia.");
+        }
+
         UsuarioEntity usuario = UsuarioEntity.builder()
                 .name(usuarioDTO.getName())
                 .email(usuarioDTO.getEmail())
                 .phone(usuarioDTO.getPhone())
-                .password(usuarioDTO.getPassword())
+                .password(encoder.encode(usuarioDTO.getPassword()))
                 .role(usuarioDTO.getRole())
                 .build();
-        serviceQuery.verifyEmail(usuarioDTO.getEmail());
+
+
         serviceQuery.verifyPhone(usuarioDTO.getPhone());
 
-        return  repository.save(usuario);
+        return repository.save(usuario);
     }
 
 
@@ -50,7 +83,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         stored.setName(usuarioDTO.getName());
         stored.setEmail(usuarioDTO.getEmail());
         stored.setPhone(usuarioDTO.getPhone());
-        stored.setPassword(usuarioDTO.getPassword());
+        stored.setPassword(encoder.encode(usuarioDTO.getPassword()));
         stored.setRole(usuarioDTO.getRole());
 
         return repository.save(stored);
@@ -67,4 +100,6 @@ public class UsuarioServiceImpl implements UsuarioService {
     public Optional<UsuarioEntity> obterPorId(Long id) {
         return repository.findById(id);
     }
+
+
 }

@@ -3,17 +3,25 @@ package com.minhabarbearia.barbearia.controller;
 
 
 
+import com.minhabarbearia.barbearia.dto.AuthenticationDTO;
+import com.minhabarbearia.barbearia.dto.LoginResponseDTO;
+import com.minhabarbearia.barbearia.dto.RegisterDTO;
 import com.minhabarbearia.barbearia.dto.UsuarioDTO;
 import com.minhabarbearia.barbearia.exception.RegraNegocioException;
 import com.minhabarbearia.barbearia.models.entity.UsuarioEntity;
 import com.minhabarbearia.barbearia.models.repository.UsuarioRepository;
+import com.minhabarbearia.barbearia.services.TokenService;
 import com.minhabarbearia.barbearia.services.UsuarioService;
+import com.minhabarbearia.barbearia.services.impl.AuthServiceImpl;
 import com.minhabarbearia.barbearia.services.query.UsuarioServiceQuery;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,21 +41,58 @@ public class UsuarioController {
     private UsuarioServiceQuery serviceQuery;
 
 
-    @PostMapping
-    @Operation(summary = "salva usuarios", description = "metodo para salvar dados de usuarios")
-    @ApiResponse(responseCode = "201" , description = "usuario salvo")
-    @ApiResponse(responseCode = "400", description = "Usuario ja cadastrado")
-    public ResponseEntity salvar(@RequestBody UsuarioDTO usuariodto){
 
-        try{
-            UsuarioEntity usuarioSalvo = service.salvarUsuario(usuariodto);
-            return  new ResponseEntity(usuarioSalvo, HttpStatus.CREATED);
-        }catch (RegraNegocioException e){
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private TokenService tokenService;
+
+    @Autowired
+    private AuthServiceImpl authService;
+
+    @Autowired
+    private   TokenService jwtService;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+
+    @PostMapping("/login")
+    @Operation(summary = "Autentica usuários", description = "Método para autenticar dados de usuários")
+    @ApiResponse(responseCode = "200", description = "Usuário autenticado com sucesso")
+    @ApiResponse(responseCode = "401", description = "Falha na autenticação. Usuário não encontrado ou senha incorreta")
+    @ApiResponse(responseCode = "400", description = "Requisição mal formatada")
+    public ResponseEntity<?> autenticar(@RequestBody @Valid AuthenticationDTO dto) {
+        try {
+            var usernamePassword = new UsernamePasswordAuthenticationToken(dto.email(), dto.password());
+            System.out.println("email: " +dto.email()+ " senha: " + dto.password());
+            var auth = authenticationManager.authenticate(usernamePassword);
+            var token = jwtService.generateToken((UsuarioEntity) auth.getPrincipal());
+            AuthenticationDTO tokenDTO = new AuthenticationDTO(((UsuarioEntity) auth.getPrincipal()).getUsername(), token);
+            return ResponseEntity.ok(tokenDTO);
+        } catch (RegraNegocioException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciais inválidas");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Erro ao processar a requisição: " + e.getMessage());
+        }
+    }
+
+
+    @PostMapping
+    @Operation(summary = "Salva usuários", description = "Método para salvar dados de usuários")
+    @ApiResponse(responseCode = "201", description = "Usuário salvo")
+    @ApiResponse(responseCode = "400", description = "Usuário já cadastrado ou dados inválidos")
+    public ResponseEntity salvar(@RequestBody @Valid UsuarioDTO usuarioDTO) {
+        try {
+            UsuarioEntity usuarioSalvo = service.salvarUsuario(usuarioDTO);
+            return new ResponseEntity<>(usuarioSalvo, HttpStatus.CREATED);
+        } catch (RegraNegocioException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-
-
     }
+
+
 
 
     @PutMapping("{id}")
