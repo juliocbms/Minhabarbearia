@@ -24,7 +24,6 @@ public class AgendamentoDTO {
 
     private OffsetDateTime startAt;
 
-
     private OffsetDateTime endAt;
 
     private Status status;

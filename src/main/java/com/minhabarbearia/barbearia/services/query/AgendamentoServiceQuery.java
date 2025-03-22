@@ -16,6 +16,6 @@ public interface AgendamentoServiceQuery {
 
     void verificarSeBArbeiroEstaDInponivel(Long id, OffsetDateTime startAt,  OffsetDateTime endAt);
 
-    List<AgendamentoEntity> listarAgendamentos(Long id, LocalDate dataInicio, LocalDate dataFim, String status);
+    List<AgendamentoEntity> listarAgendamentos(Long id, LocalDate dataInicio, LocalDate dataFim, Status status);
 
 }

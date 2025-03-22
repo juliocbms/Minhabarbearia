@@ -44,7 +44,7 @@ public class AgendamentoServiceQueryImpl implements AgendamentoServiceQuery {
     }
 
     @Override
-    public List<AgendamentoEntity> listarAgendamentos(Long id, LocalDate dataInicio, LocalDate dataFim, String status) {
+    public List<AgendamentoEntity> listarAgendamentos(Long id, LocalDate dataInicio, LocalDate dataFim, Status status) {
         if (dataInicio != null && dataFim != null) {
             return repository.findByClienteIdOrBarbeiroIdAndDataAgendamentoBetweenAndStatus(id, dataInicio, dataFim, status);
         } else if (dataInicio != null) {

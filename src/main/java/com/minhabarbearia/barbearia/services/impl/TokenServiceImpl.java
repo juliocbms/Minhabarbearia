@@ -24,6 +24,7 @@ public class TokenServiceImpl implements TokenService {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             String token = JWT.create()
+                    .withClaim("id", user.getId())
                     .withIssuer("auth-api")
                     .withSubject(user.getEmail())
                     .withExpiresAt(generateexpiratinDate())

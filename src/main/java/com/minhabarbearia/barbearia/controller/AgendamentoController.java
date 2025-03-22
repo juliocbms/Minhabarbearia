@@ -7,12 +7,14 @@ import com.minhabarbearia.barbearia.exception.RegraNegocioException;
 import com.minhabarbearia.barbearia.models.entity.AgendamentoEntity;
 import com.minhabarbearia.barbearia.models.entity.UsuarioEntity;
 import com.minhabarbearia.barbearia.models.enums.Status;
+import com.minhabarbearia.barbearia.models.mapper.AgendamentoRequest;
 import com.minhabarbearia.barbearia.models.repository.UsuarioRepository;
 import com.minhabarbearia.barbearia.services.AgendamentoService;
 import com.minhabarbearia.barbearia.services.query.AgendamentoServiceQuery;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.AllArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -95,15 +97,17 @@ public class AgendamentoController {
                 new ResponseEntity<>("Agendamento não encontrado na base de Dados.", HttpStatus.BAD_REQUEST));
     }
 
-    @GetMapping("/data/periodo")
+
+    @GetMapping("/clients/inicio/{id}")
     @Operation(summary = "Busca agendamento por período", description = "Método para buscar agendamentos por período")
     @ApiResponse(responseCode = "200", description = "Agendamentos encontrados")
     @ApiResponse(responseCode = "204", description = "Nenhum agendamento encontrado")
     public ResponseEntity<List<AgendamentoEntity>> obterAgendamentos(
-            @RequestParam Long id,
-            @RequestParam(required = false) LocalDate dataInicio,
-            @RequestParam(required = false) LocalDate dataFim,
-            @RequestParam(required = false) String status) {
+            @PathVariable Long id,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicio,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFim,
+            @RequestParam(required = false) Status status) {
+
 
         List<AgendamentoEntity> agendamentos = serviceQuery.listarAgendamentos(id, dataInicio, dataFim, status);
 

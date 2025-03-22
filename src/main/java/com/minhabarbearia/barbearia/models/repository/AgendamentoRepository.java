@@ -49,5 +49,5 @@ public interface AgendamentoRepository extends JpaRepository<AgendamentoEntity,L
             @Param("id") Long id,
             @Param("dataInicio") LocalDate dataInicio,
             @Param("dataFim") LocalDate dataFim,
-            @Param("status") String status);
+            @Param("status") Status status);
 }

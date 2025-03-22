@@ -69,7 +69,7 @@ public class UsuarioController {
             System.out.println("email: " +dto.email()+ " senha: " + dto.password());
             var auth = authenticationManager.authenticate(usernamePassword);
             var token = jwtService.generateToken((UsuarioEntity) auth.getPrincipal());
-            AuthenticationDTO tokenDTO = new AuthenticationDTO(((UsuarioEntity) auth.getPrincipal()).getUsername(), token);
+            var tokenDTO = new LoginResponseDTO(token);
             return ResponseEntity.ok(tokenDTO);
         } catch (RegraNegocioException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciais inválidas");
