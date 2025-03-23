@@ -9,6 +9,7 @@ import com.minhabarbearia.barbearia.dto.RegisterDTO;
 import com.minhabarbearia.barbearia.dto.UsuarioDTO;
 import com.minhabarbearia.barbearia.exception.RegraNegocioException;
 import com.minhabarbearia.barbearia.models.entity.UsuarioEntity;
+import com.minhabarbearia.barbearia.models.enums.Role;
 import com.minhabarbearia.barbearia.models.repository.UsuarioRepository;
 import com.minhabarbearia.barbearia.services.TokenService;
 import com.minhabarbearia.barbearia.services.UsuarioService;
@@ -25,6 +26,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -132,5 +134,20 @@ public class UsuarioController {
         }
 
         return ResponseEntity.ok(usuario);
+    }
+    @GetMapping
+    @Operation(summary = "Busca todos os barbeiros", description = "Método para buscar todos os usuários com a role BARBEIRO")
+    @ApiResponse(responseCode = "200", description = "Barbeiros encontrados")
+    @ApiResponse(responseCode = "404", description = "Nenhum barbeiro encontrado")
+    public ResponseEntity<List<UsuarioEntity>> obterTodosBarbeiros() {
+        try {
+            List<UsuarioEntity> barbeiros = serviceQuery.findAllBarbeiros();
+            if (barbeiros.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            return ResponseEntity.ok(barbeiros);
+        } catch (RegraNegocioException ex) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }

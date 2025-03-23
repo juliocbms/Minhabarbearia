@@ -48,13 +48,14 @@ public class AgendamentoServiceQueryImpl implements AgendamentoServiceQuery {
         if (dataInicio != null && dataFim != null) {
             return repository.findByClienteIdOrBarbeiroIdAndDataAgendamentoBetweenAndStatus(id, dataInicio, dataFim, status);
         } else if (dataInicio != null) {
-            return repository.findByClienteIdOrBarbeiroIdAndDataAgendamentoBetweenAndStatus(id, dataInicio, dataInicio, status);
-        } else if (status != null) {
-            return repository.findByClienteIdOrBarbeiroIdAndDataAgendamentoBetweenAndStatus(id, LocalDate.now(), LocalDate.now(), status);
+            return repository.findByClienteIdOrBarbeiroIdAndDataAgendamentoAfterAndStatus(id, dataInicio, status);
+        } else if (dataFim != null) {
+            return repository.findByClienteIdOrBarbeiroIdAndDataAgendamentoBeforeAndStatus(id, dataFim, status);
         } else {
-            return repository.findByClienteIdOrBarbeiroIdAndDataAgendamentoBetweenAndStatus(id, LocalDate.now(), LocalDate.now(), null);
+            return repository.findByClienteIdOrBarbeiroIdAndDataAgendamentoBetweenAndStatus(id, null, null, status);
         }
     }
+
 
 
 

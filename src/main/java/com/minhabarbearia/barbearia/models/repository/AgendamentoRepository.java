@@ -43,11 +43,29 @@ public interface AgendamentoRepository extends JpaRepository<AgendamentoEntity,L
     );
 
     @Query("SELECT a FROM AgendamentoEntity a WHERE (a.cliente.id = :id OR a.barbeiro.id = :id) " +
-            "AND a.dataAgendamento BETWEEN :dataInicio AND :dataFim " +
+            "AND (:dataInicio IS NULL OR a.dataAgendamento >= :dataInicio) " +
+            "AND (:dataFim IS NULL OR a.dataAgendamento <= :dataFim) " +
             "AND (:status IS NULL OR a.status = :status)")
     List<AgendamentoEntity> findByClienteIdOrBarbeiroIdAndDataAgendamentoBetweenAndStatus(
             @Param("id") Long id,
             @Param("dataInicio") LocalDate dataInicio,
+            @Param("dataFim") LocalDate dataFim,
+            @Param("status") Status status);
+
+
+    @Query("SELECT a FROM AgendamentoEntity a WHERE (a.cliente.id = :id OR a.barbeiro.id = :id) " +
+            "AND a.dataAgendamento >= :dataInicio " +
+            "AND (:status IS NULL OR a.status = :status)")
+    List<AgendamentoEntity> findByClienteIdOrBarbeiroIdAndDataAgendamentoAfterAndStatus(
+            @Param("id") Long id,
+            @Param("dataInicio") LocalDate dataInicio,
+            @Param("status") Status status);
+
+    @Query("SELECT a FROM AgendamentoEntity a WHERE (a.cliente.id = :id OR a.barbeiro.id = :id) " +
+            "AND a.dataAgendamento <= :dataFim " +
+            "AND (:status IS NULL OR a.status = :status)")
+    List<AgendamentoEntity> findByClienteIdOrBarbeiroIdAndDataAgendamentoBeforeAndStatus(
+            @Param("id") Long id,
             @Param("dataFim") LocalDate dataFim,
             @Param("status") Status status);
 }

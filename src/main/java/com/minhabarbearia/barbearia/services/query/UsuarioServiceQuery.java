@@ -1,7 +1,9 @@
 package com.minhabarbearia.barbearia.services.query;
 
 import com.minhabarbearia.barbearia.models.entity.UsuarioEntity;
+import com.minhabarbearia.barbearia.models.enums.Role;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UsuarioServiceQuery {
@@ -16,6 +18,5 @@ public interface UsuarioServiceQuery {
 
     void verifyEmail( long id, String email);
 
-
-    void verifyEmail(String email);
+    List<UsuarioEntity> findAllBarbeiros();
 }

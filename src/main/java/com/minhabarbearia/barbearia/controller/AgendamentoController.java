@@ -35,7 +35,7 @@ public class AgendamentoController {
     private final UsuarioRepository repository;
 
 
-    @PostMapping
+    @PostMapping("/save")
     @Operation(summary = "salva agendamentos", description = "Método para salvar agendamentos")
     @ApiResponse(responseCode = "201", description = "Agendamento salvo")
     @ApiResponse(responseCode = "400", description = "Agendamento já cadastrado")
@@ -103,7 +103,7 @@ public class AgendamentoController {
     @ApiResponse(responseCode = "200", description = "Agendamentos encontrados")
     @ApiResponse(responseCode = "204", description = "Nenhum agendamento encontrado")
     public ResponseEntity<List<AgendamentoEntity>> obterAgendamentos(
-            @PathVariable Long id,
+            @PathVariable("id") long id,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicio,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFim,
             @RequestParam(required = false) Status status) {
@@ -117,7 +117,6 @@ public class AgendamentoController {
 
         return ResponseEntity.ok(agendamentos);
     }
-
 
 
 

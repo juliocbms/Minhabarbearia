@@ -12,8 +12,6 @@ public interface UsuarioService {
 
     UsuarioEntity salvarUsuario(UsuarioDTO usuarioDTO);
 
-
-
     UsuarioEntity atualizar(Long id, UsuarioDTO usuarioDTO);
 
     void delete( long id);
