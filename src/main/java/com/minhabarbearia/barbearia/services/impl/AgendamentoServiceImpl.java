@@ -45,6 +45,7 @@ public class AgendamentoServiceImpl implements AgendamentoService {
         UsuarioEntity barbeiro = usuarioRepository.findById(agendamentoDTO.getBarbeiroId())
                 .orElseThrow(() -> new RuntimeException("Barbeiro não encontrado"));
 
+
         AgendamentoEntity agendamento = AgendamentoEntity.builder()
                 .cliente(cliente)
                 .barbeiro(barbeiro)

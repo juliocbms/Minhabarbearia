@@ -42,10 +42,16 @@ public class AgendamentoController {
     public ResponseEntity<AgendamentoEntity> salvar(@RequestBody AgendamentoDTO agendamentoDTO) {
         try {
             AgendamentoEntity agendamento = service.salvar(agendamentoDTO);
+            System.out.println("Agendamento: " + agendamentoDTO
+            );
+            System.out.println("Agendamento: " + agendamento
+            );
             return ResponseEntity.status(HttpStatus.CREATED).body(agendamento);
+
         } catch (RegraNegocioException e) {
             return ResponseEntity.badRequest().body(null);
         }
+
     }
 
     @PutMapping("{id}")
