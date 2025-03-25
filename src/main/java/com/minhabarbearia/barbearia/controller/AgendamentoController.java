@@ -124,6 +124,26 @@ public class AgendamentoController {
         return ResponseEntity.ok(agendamentos);
     }
 
+    @GetMapping("/clients/history/{id}")
+    @Operation(summary = "Busca agendamento por período", description = "Método para buscar agendamentos por período")
+    @ApiResponse(responseCode = "200", description = "Agendamentos encontrados")
+    @ApiResponse(responseCode = "204", description = "Nenhum agendamento encontrado")
+    public ResponseEntity<List<AgendamentoEntity>> obterAgendamentosHistory(
+            @PathVariable("id") long id,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicio,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFim,
+            @RequestParam(required = false) Status status) {
+
+
+        List<AgendamentoEntity> agendamentos = serviceQuery.listarAgendamentos(id, dataInicio, dataFim, status);
+
+        if (agendamentos.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+
+        return ResponseEntity.ok(agendamentos);
+    }
+
 
 
 }
