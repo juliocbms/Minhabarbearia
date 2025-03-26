@@ -18,4 +18,5 @@ public interface AgendamentoServiceQuery {
 
     List<AgendamentoEntity> listarAgendamentos(Long id, LocalDate dataInicio, LocalDate dataFim, Status status);
 
+
 }

@@ -11,8 +11,7 @@ import com.minhabarbearia.barbearia.services.query.AgendamentoServiceQuery;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.OffsetDateTime;
+import java.time.*;
 import java.util.List;
 
 @Service
@@ -55,6 +54,7 @@ public class AgendamentoServiceQueryImpl implements AgendamentoServiceQuery {
             return repository.findByClienteIdOrBarbeiroIdAndDataAgendamentoBetweenAndStatus(id, null, null, status);
         }
     }
+
 
 
 

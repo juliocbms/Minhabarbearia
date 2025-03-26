@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -68,4 +69,6 @@ public interface AgendamentoRepository extends JpaRepository<AgendamentoEntity,L
             @Param("id") Long id,
             @Param("dataFim") LocalDate dataFim,
             @Param("status") Status status);
+
+
 }

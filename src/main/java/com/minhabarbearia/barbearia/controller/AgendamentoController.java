@@ -144,6 +144,26 @@ public class AgendamentoController {
         return ResponseEntity.ok(agendamentos);
     }
 
+    @GetMapping("/by-date/{id}")
+    @Operation(summary = "Busca agendamentos por data", description = "Método para buscar agendamentos em uma data específica")
+    public ResponseEntity<List<AgendamentoEntity>> obterAgendamentosPorData(
+            @PathVariable("id") long id,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data) {
+
+        List<AgendamentoEntity> agendamentos = serviceQuery.listarAgendamentos(
+                id,
+                data,
+                data,
+                null // status null para trazer todos
+        );
+
+        if (agendamentos.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        }
+
+        return ResponseEntity.ok(agendamentos);
+    }
+
 
 
 }
