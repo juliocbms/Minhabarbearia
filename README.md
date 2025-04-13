@@ -2,6 +2,13 @@
 
 A robust and secure backend for a Barber Shop Scheduling System built with **Spring Boot**, focusing on RESTful practices, security, scalability, and maintainability.
 
+## Tecnologias Utilizadas
+![Java](https://img.shields.io/badge/Java-100%25-orange)
+![Spring Boot](https://img.shields.io/badge/Spring_Boot-80%25-green)
+![Docker](https://img.shields.io/badge/Docker-20%25-blue)
+![Flyway](https://img.shields.io/badge/Flyway-15%25-lightblue)
+![Swagger](https://img.shields.io/badge/Swagger-10%25-yellow)
+
 ### 📊 Linguagens mais usadas
 
 ![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=juliocbms&repo=Minhabarbearia&layout=compact&theme=transparent)
