@@ -9,10 +9,6 @@ A robust and secure backend for a Barber Shop Scheduling System built with **Spr
 ![Flyway](https://img.shields.io/badge/Flyway-15%25-lightblue)
 ![Swagger](https://img.shields.io/badge/Swagger-10%25-yellow)
 
-### 📊 Linguagens mais usadas
-
-![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=juliocbms&repo=Minhabarbearia&layout=compact&theme=transparent)
-
 ## 📌 Features
 
 - ✅ **JWT Authentication**: Secure login and authorization using JSON Web Tokens
