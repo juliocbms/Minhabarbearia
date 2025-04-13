@@ -2,6 +2,10 @@
 
 A robust and secure backend for a Barber Shop Scheduling System built with **Spring Boot**, focusing on RESTful practices, security, scalability, and maintainability.
 
+### 📊 Linguagens mais usadas
+
+![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=juliocbms&repo=Minhabarbearia&layout=compact&theme=transparent)
+
 ## 📌 Features
 
 - ✅ **JWT Authentication**: Secure login and authorization using JSON Web Tokens
