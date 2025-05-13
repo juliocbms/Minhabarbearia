@@ -1,0 +1,16 @@
+spring:
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  devtools:
+    remote:
+      secret: 123
+    restart:
+      trigger-file: trigger.txt
+
+  api:
+    security:
+      token:
+        secret: ${JWT_SECRET:my-secret-key}

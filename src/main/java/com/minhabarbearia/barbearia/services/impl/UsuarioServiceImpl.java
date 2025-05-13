@@ -4,15 +4,13 @@ import com.minhabarbearia.barbearia.dto.UsuarioDTO;
 import com.minhabarbearia.barbearia.exception.RegraNegocioException;
 import com.minhabarbearia.barbearia.models.entity.UsuarioEntity;
 import com.minhabarbearia.barbearia.models.repository.UsuarioRepository;
-import com.minhabarbearia.barbearia.services.TokenService;
+
 import com.minhabarbearia.barbearia.services.UsuarioService;
 import com.minhabarbearia.barbearia.services.query.UsuarioServiceQuery;
 import lombok.AllArgsConstructor;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;

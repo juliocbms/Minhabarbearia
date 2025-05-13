@@ -1,0 +1,14 @@
+CREATE TABLE AGENDAMENTOS (
+    id BIGSERIAL PRIMARY KEY,
+    id_cliente BIGINT NOT NULL,
+    id_barbeiro BIGINT NOT NULL,
+    start_at TIMESTAMPTZ NOT NULL,
+    end_at TIMESTAMPTZ NOT NULL,
+    status VARCHAR(255) NOT NULL,
+    data_cadastro DATE NOT NULL DEFAULT CURRENT_DATE,
+    data_agendamento DATE NOT NULL,
+    CONSTRAINT UK_AGENDAMENTOS_INTERVALO UNIQUE (start_at, end_at),
+    CONSTRAINT fk_agendamento_cliente FOREIGN KEY (id_cliente) REFERENCES USUARIOS(id) ON DELETE CASCADE,
+    CONSTRAINT fk_agendamento_barbeiro FOREIGN KEY (id_barbeiro) REFERENCES USUARIOS(id) ON DELETE CASCADE
+);
+

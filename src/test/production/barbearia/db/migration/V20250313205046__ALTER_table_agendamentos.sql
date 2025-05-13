@@ -1,0 +1,1 @@
+ALTER TABLE agendamentos ALTER COLUMN data_cadastro TYPE TIMESTAMP WITH TIME ZONE;

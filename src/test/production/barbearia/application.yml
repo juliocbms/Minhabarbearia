@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: barbearia
+
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+
+  jwt:
+    expiracao: 30
+    chave-assinatura: Q9CqhbvB4c6kH/dj1igps/pTIogfzRNZoAjDMF/UkDg=
